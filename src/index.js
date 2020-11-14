@@ -2,11 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import Main from './component/Main';
+import EncounterTracker from './component/encounter_tracker/EncounterTracker'
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <EncounterTracker />
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -5,9 +5,167 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: slateblue
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+#main{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow:column;
+}
+
+.deckHolder{
+  display: flex;
+  flex-flow: row;
+}
+
+.deckEditor{
+  display: flex;
+  flex-flow: column;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: 1rem;
+}
+
+.navbar{
+  background-color:seashell;
+  width: 100%;
+  height: 3rem;
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.newDeckBtn{
+  background-color: transparent;
+  border-radius: 100px;
+  color:slateblue;
+  border: 3px solid slateblue;
+  width:3rem;
+  height:2rem;
+}
+
+.newDeckBtn:hover{
+  background-color: slateblue;
+  border-color: black;
+  color:black;
+}
+
+h3{
+  text-align: center;
+}
+
+.radialMenuButton{
+  border-radius: 25px;
+  border:3px solid darkgray;
+  background-color: lightgray;
+  width:2rem;
+  height:2rem;
+}
+
+.radialOption{
+  position: absolute;
+  border: 3px solid darkgrey;
+  border-radius: 15px;
+  height: 2rem;
+  width: 7rem;
+  background-color: lightgray;
+}
+
+.radialOptions{
+  position: relative;
+  top:-20px;
+  left:-40px;
+}
+
+.modal{
+  position: absolute;
+  top:0;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  background-color: rgba(0, 0, 0, .5);
+  width:100vw;
+  height:100vh;
+}
+
+.closeModalBtn{
+  background-color: rgba(0, 0, 0, 0);
+  border:none;
+  margin-left: 15rem;
+  width:2rem;
+  height:2rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.closeModalBtn:hover{
+  background-color: rgba(255, 255, 255, .5);
+  border-radius: 50%;
+  
+}
+
+.modalContent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  background-color: lightgray;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: .5rem .5rem rgba(0, 0, 0, .2);
+}
+
+.modalContent input{
+  border-radius: 15px;
+  border-color: black;
+  box-shadow: 0;
+  text-align: center;
+  margin-bottom: .5rem;
+}
+
+.modalContent label{
+  margin-bottom: .5rem;
+}
+
+.modalContent button{
+  margin-top: 1rem;
+  border-radius: 15px;
+  background-color: white;
+  padding: .5rem;
+  border: 2px solid black;
+}
+
+.card {
+  margin: 1rem;
+  padding: 1rem;
+  border: 3px solid, black;
+  border-radius: 15px;
+  background-color: seashell;
+  width: 18rem;
+  height: 24rem;
+}
+
+.cardTitle {
+  margin:5px;
+}
+
+.cardBody {
+  background-color: white;
+  border-radius: 15px;
+  padding:.5rem;
+}
+
+.creature b{
+  font-weight: bold;
+  color:red;
 }
