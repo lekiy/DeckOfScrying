@@ -49,10 +49,9 @@ class EncounterTracker extends Component {
     }
 
     calcHP(formula){
-        const regEx = /([0-9]*[d][0-9]*)/g;
-        const dice = formula.match(regEx);
-        let total = dice.reduce((acc, value) => {this.rollDice(parseInt(value.match(/([0-9]*)(?:d)/g)), parseInt(value.match(/(?:d)([0-9]*)/g)))}, parseInt(formula.match(/([-+][0-9]*)$/g)));
-        return total;
+        const dice = this.rollDice(parseInt(formula.match(/\d*(?=d)/g)), parseInt(formula.match(/(?<=d)\d*/g)));
+        const additional = parseInt(formula.match(/[\+|-]\d*/g));
+       return 
     }
 
     rollDice(amount, size){
