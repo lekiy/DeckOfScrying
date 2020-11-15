@@ -19,6 +19,7 @@ class EncounterTracker extends Component {
         this.calcHP = this.calcHP.bind(this);
         this.buildImgURL = this.buildImgURL.bind(this);
         this.rollDice = this.rollDice.bind(this);
+        this.startEncounter = this.startEncounter(this);
     }
 
     toggleAddCreatureModal(){
@@ -35,6 +36,8 @@ class EncounterTracker extends Component {
             thumbnail: thumbnail, 
             armor: formData[1].value,
             initMod: formData[2].value,
+            init: this.rollDice(1, 20)+formData[2].value,
+            active: false,
             hpMax: hp,
             hpCurrent:hp
         }
@@ -43,15 +46,28 @@ class EncounterTracker extends Component {
         // console.log(this.state.creaturesList);
     }
 
+    startEncounter() {
+
+    }
+
     buildImgURL(string){
         const value = string.toLowerCase().split(' ').join('-');
         return process.env.PUBLIC_URL+'/'+value+'.png'
     }
 
     calcHP(formula){
-        const dice = this.rollDice(parseInt(formula.match(/\d*(?=d)/g)), parseInt(formula.match(/(?<=d)\d*/g)));
-        const additional = parseInt(formula.match(/[\+|-]\d*/g));
-       return 
+        const values = formula.match(/(\d+d\d+)|([\+|-]*\d+)/g)
+        let total = 0;
+        values.forEach(i => {
+            if(/\d+d\d+/g.test(i)){
+                const digits = i.split('d');
+                total += this.rollDice(parseInt(digits[0]), parseInt(digits[1]));
+            }else{
+                total += parseInt(i);
+            }
+        });
+
+        return total;
     }
 
     rollDice(amount, size){
@@ -63,21 +79,26 @@ class EncounterTracker extends Component {
     }
 
     render(){
-        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={i} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} />);
+        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} />);
         //console.log(this.state.creaturesList);
         // console.log(renderedCreatures);
 
         return (
             <div className='encounter-tracker'>
-                <Toolbar content={<button className='add-creature-btn' onClick={this.toggleAddCreatureModal}></button>} />
-                <form onSubmit={(e) => {
+                <Toolbar content={
+                    <React.Fragment>
+                        <button className='add-creature-btn' onClick={this.toggleAddCreatureModal}></button>
+                        <button className='start-encounter-btn' onClick={this.startEncounter}></button>
+                    </React.Fragment>
+                } />
+                {/* <form onSubmit={(e) => {
                     e.preventDefault();
                     console.log(this.calcHP(e.target[0].value));
                     // console.log(this.rollDice(2, 6));
-                    }}>
+                }}>
                 <input id='test'></input>
                 <input type='submit'></input>
-                </form>
+                </form> */}
                 <ul className='creature-list'>
                     {renderedCreatures}
                 </ul>
