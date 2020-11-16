@@ -11,7 +11,9 @@ class EncounterTracker extends Component {
         let creature = <Creature thumbnail={process.env.PUBLIC_URL+'/swarm-of-spiders.png'} name='Swarm of Spiders' armor='10' hpMax='7' hpCurrent='7'/>;
         this.state = {
             creaturesList: [],
-            addCreatureModal: false
+            addCreatureModal: false,
+            encounterStarted: false,
+            encounterIndex: 0
         }
 
         this.toggleAddCreatureModal = this.toggleAddCreatureModal.bind(this);
@@ -19,7 +21,8 @@ class EncounterTracker extends Component {
         this.calcHP = this.calcHP.bind(this);
         this.buildImgURL = this.buildImgURL.bind(this);
         this.rollDice = this.rollDice.bind(this);
-        this.startEncounter = this.startEncounter(this);
+        this.startEncounter = this.startEncounter.bind(this);
+        this.nextTurn = this.nextTurn.bind(this);
     }
 
     toggleAddCreatureModal(){
@@ -47,7 +50,25 @@ class EncounterTracker extends Component {
     }
 
     startEncounter() {
+        if(this.state.creaturesList.length > 0){
+            let creatures = this.state.creaturesList.sort((a, b) => a.init - b.init);
+            creatures[0].active = true;
+            this.setState({creaturesList: this.state.creaturesList.sort((a, b) => a.init - b.init), encounterStarted: true});
+            console.log(this.state.encounterIndex);
+        }else{
+            console.log('no creatures in list', this.state.creaturesList);
+        }
+        
+    }
 
+    nextTurn() {
+        this.setState({encounterIndex: this.state.encounterIndex+1, creaturesList: this.state.creaturesList.map((creature, i) => {
+            creature.active = false;
+            if(i === this.state.encounterIndex+1){
+                creature.active = true;
+            }
+            return creature;
+        })})
     }
 
     buildImgURL(string){
@@ -88,7 +109,7 @@ class EncounterTracker extends Component {
                 <Toolbar content={
                     <React.Fragment>
                         <button className='add-creature-btn' onClick={this.toggleAddCreatureModal}></button>
-                        <button className='start-encounter-btn' onClick={this.startEncounter}></button>
+                        {this.state.encounterStarted ? <button className='next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
                     </React.Fragment>
                 } />
                 {/* <form onSubmit={(e) => {
