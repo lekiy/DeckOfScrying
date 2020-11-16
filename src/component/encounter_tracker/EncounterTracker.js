@@ -121,14 +121,6 @@ class EncounterTracker extends Component {
                         {this.state.encounterStarted ? <button className='next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
                     </React.Fragment>
                 } />
-                {/* <form onSubmit={(e) => {
-                    e.preventDefault();
-                    console.log(this.calcHP(e.target[0].value));
-                    // console.log(this.rollDice(2, 6));
-                }}>
-                <input id='test'></input>
-                <input type='submit'></input>
-                </form> */}
                 <ul className='creature-list'>
                     {renderedCreatures}
                 </ul>
@@ -138,9 +130,20 @@ class EncounterTracker extends Component {
                     <label for='name'>Creature Name</label>
                     <input type='name' id='name'></input>
                     <label for='armor'>Armor Class</label>
-                    <input type='range' id='armor' min='1' max='30'></input>
+                    <div>
+                        <input type='range' id='armor' min='1' max='30' placeholder='10' defaultValue={10} onChange={(e) => {
+                            document.getElementById('armor-val').innerHTML = e.target.value;
+                        }}></input>
+                        <span className='range-value' id='armor-val' ref='armor-val'>10</span>
+                    </div>
                     <label for='init-mod'>Inititive Modifier</label>
-                    <input type='range' id='init-mod' min='-5' max='5'></input>
+                    <div>
+                        <input type='range' id='init-mod' min='-5' max='5' placeholder='0' defaultValue={0} onChange={(e) => {
+                            const val = e.target.value > 0 ? '+'+e.target.value : e.target.value;
+                            document.getElementById('init-mod-val').innerHTML = val;
+                        }}></input>
+                        <span className='range-value' id='init-mod-val' ref='init-mod-val'>0</span>
+                    </div>
                     <label for='hp'>HP Formula</label>
                     <input id='hp'></input>
                     <input type='submit'></input>
