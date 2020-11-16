@@ -23,6 +23,7 @@ class EncounterTracker extends Component {
         this.rollDice = this.rollDice.bind(this);
         this.startEncounter = this.startEncounter.bind(this);
         this.nextTurn = this.nextTurn.bind(this);
+        this.modifyHp = this.modifyHp.bind(this);
     }
 
     toggleAddCreatureModal(){
@@ -62,9 +63,11 @@ class EncounterTracker extends Component {
     }
 
     nextTurn() {
-        this.setState({encounterIndex: this.state.encounterIndex+1, creaturesList: this.state.creaturesList.map((creature, i) => {
+        let index = this.state.encounterIndex+1;
+        if(index >= this.state.creaturesList.length) index = 0;
+        this.setState({encounterIndex: index, creaturesList: this.state.creaturesList.map((creature, i) => {
             creature.active = false;
-            if(i === this.state.encounterIndex+1){
+            if(i === index){
                 creature.active = true;
             }
             return creature;
@@ -91,6 +94,12 @@ class EncounterTracker extends Component {
         return total;
     }
 
+    modifyHp(index, amount){
+        const creatures = this.state.creaturesList;
+        creatures[index].hpCurrent+=amount;
+        this.setState({creaturesList: creatures});
+    }
+
     rollDice(amount, size){
         let total = 0;
         for(let i = 0; i < amount; i++){
@@ -100,7 +109,7 @@ class EncounterTracker extends Component {
     }
 
     render(){
-        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} />);
+        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+' creature '+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp}/>);
         //console.log(this.state.creaturesList);
         // console.log(renderedCreatures);
 
