@@ -34,7 +34,7 @@ class Creature extends Component {
             
 
         return (
-            <li className='creature' style={this.props.active ? {'marginLeft': '-10px'} : {'marginLeft': '10px'}}>
+            <li className='creature' style={this.props.active ? {'marginLeft': '-20px'} : {'marginLeft': '10px'}}>
                 <img src={this.props.thumbnail} />
                 <h3>{this.props.name}</h3> 
                 <div>

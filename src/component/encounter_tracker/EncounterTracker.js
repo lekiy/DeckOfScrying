@@ -117,7 +117,7 @@ class EncounterTracker extends Component {
             <div className='encounter-tracker'>
                 <Toolbar content={
                     <React.Fragment>
-                        <button className='add-creature-btn' onClick={this.toggleAddCreatureModal}></button>
+                        <button className='add-creature-btn' onClick={this.toggleAddCreatureModal}>Add Combatent</button>
                         {this.state.encounterStarted ? <button className='next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
                     </React.Fragment>
                 } />
