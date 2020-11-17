@@ -3,6 +3,7 @@ import Creature from './Creature';
 import './encounter-tracker.css';
 import Toolbar from './Toolbar';
 import Modal from './Modal'
+import SearchItem from './SearchItem'
 import {SavedCreatures} from './SavedCreatures'
 
 
@@ -30,6 +31,7 @@ class EncounterTracker extends Component {
         this.modifyHp = this.modifyHp.bind(this);
         this.toggleCreateCreatureMenu = this.toggleCreateCreatureMenu.bind(this);
         this.searchCreatures = this.searchCreatures.bind(this);
+        this.selectCreature = this.selectCreature.bind(this);
     }
 
     /* toggles the add creature modal*/
@@ -136,6 +138,22 @@ class EncounterTracker extends Component {
         this.setState({creatureSearchTerm: e.target.value, showCreateCreatureMenu: false})
     }
 
+    selectCreature(creatureData){
+        const thumbnail = this.buildImgURL(creatureData.thumbnail)
+        const hp = this.calcHP(creatureData.hpFormula);
+        const creature = {
+            name: creatureData.name, 
+            thumbnail: thumbnail, 
+            armor: creatureData.armor,
+            initMod: creatureData.initMod,
+            init: this.rollDice(1, 20)+creatureData.initMod,
+            active: false,
+            hpMax: hp,
+            hpCurrent:hp
+        }
+        this.setState({creaturesList: [...this.state.creaturesList, creature]});
+    }
+
     render(){
         const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+'-creature-'+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp}/>);
 
@@ -157,7 +175,7 @@ class EncounterTracker extends Component {
                         <button className="create-custom-btn" onClick={this.toggleCreateCreatureMenu}>Create Custom Combatent</button>
                         {this.state.creatureSearchTerm.length > 0 ? this.state.savedCreatures.filter((creature) => {
                             return creature.name.toLowerCase().includes(this.state.creatureSearchTerm.toLowerCase());
-                        }).map((creature, i) => {return <Creature key={'search-creature-'+i} thumbnail={creature.thumbnail} name={creature.name} />}) : <div></div>}
+                        }).map((creature, i) => {return <SearchItem key={'search-creature-'+i} onClick={() => this.selectCreature(creature)} thumbnail={this.buildImgURL(creature.thumbnail)} name={creature.name} />}) : <div></div>}
                         {this.state.showCreateCreatureMenu ? (
                         <form id='create-creature-form'onSubmit={this.addCreature}>
                             <label for='name'>Creature Name</label>
