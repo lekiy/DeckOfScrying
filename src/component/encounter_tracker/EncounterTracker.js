@@ -3,17 +3,21 @@ import Creature from './Creature';
 import './encounter-tracker.css';
 import Toolbar from './Toolbar';
 import Modal from './Modal'
+import {SavedCreatures} from './SavedCreatures'
 
 
 class EncounterTracker extends Component {
     constructor(props){
         super(props);
-        let creature = <Creature thumbnail={process.env.PUBLIC_URL+'/swarm-of-spiders.png'} name='Swarm of Spiders' armor='10' hpMax='7' hpCurrent='7'/>;
+        //let creature = <Creature thumbnail={process.env.PUBLIC_URL+'/swarm-of-spiders.png'} name='Swarm of Spiders' armor='10' hpMax='7' hpCurrent='7'/>;
         this.state = {
             creaturesList: [],
             addCreatureModal: false,
             encounterStarted: false,
-            encounterIndex: 0
+            encounterIndex: 0,
+            showCreateCreatureMenu: false,
+            creatureSearchTerm: '',
+            savedCreatures: SavedCreatures
         }
 
         this.toggleAddCreatureModal = this.toggleAddCreatureModal.bind(this);
@@ -24,12 +28,16 @@ class EncounterTracker extends Component {
         this.startEncounter = this.startEncounter.bind(this);
         this.nextTurn = this.nextTurn.bind(this);
         this.modifyHp = this.modifyHp.bind(this);
+        this.toggleCreateCreatureMenu = this.toggleCreateCreatureMenu.bind(this);
+        this.searchCreatures = this.searchCreatures.bind(this);
     }
 
+    /* toggles the add creature modal*/
     toggleAddCreatureModal(){
         this.setState({addCreatureModal: !this.state.addCreatureModal});
     }
 
+    /* adds a creature to the state list with specified attributes */
     addCreature(e){
         e.preventDefault();
         const formData = e.target;
@@ -50,18 +58,19 @@ class EncounterTracker extends Component {
         // console.log(this.state.creaturesList);
     }
 
+    /* Sorts the creatures list by its inititive value then sets the encounter to true*/
     startEncounter() {
         if(this.state.creaturesList.length > 0){
             let creatures = this.state.creaturesList.sort((a, b) => a.init - b.init);
             creatures[0].active = true;
             this.setState({creaturesList: this.state.creaturesList.sort((a, b) => a.init - b.init), encounterStarted: true});
-            console.log(this.state.encounterIndex);
         }else{
             console.log('no creatures in list', this.state.creaturesList);
         }
         
     }
 
+    /* Cycles through the turn list */
     nextTurn() {
         let index = this.state.encounterIndex+1;
         if(index >= this.state.creaturesList.length) index = 0;
@@ -74,11 +83,18 @@ class EncounterTracker extends Component {
         })})
     }
 
+    /* takes a string and removes spaces and replaces them with dashes, then
+        adds the resource URL location */
     buildImgURL(string){
         const value = string.toLowerCase().split(' ').join('-');
         return process.env.PUBLIC_URL+'/'+value+'.png'
     }
 
+    /*
+        Takes in a forumla in the format of (amount+d+size)+(+/-number),
+         and returns a partly randomized result based on inputed formula.
+         Both sides of the formula are optional.
+    */
     calcHP(formula){
         const values = formula.match(/(\d+d\d+)|([\+|-]*\d+)/g)
         let total = 0;
@@ -94,12 +110,16 @@ class EncounterTracker extends Component {
         return total;
     }
 
+    /* Adds or subtracts from the creatures (specified by the index) current hp
+        held in state. */
     modifyHp(index, amount){
         const creatures = this.state.creaturesList;
         creatures[index].hpCurrent+=amount;
         this.setState({creaturesList: creatures});
     }
 
+    /* Returns a randomized value between (1-inputed size)*amount, 
+        just like rolling a 6 sided die.*/ 
     rollDice(amount, size){
         let total = 0;
         for(let i = 0; i < amount; i++){
@@ -108,10 +128,16 @@ class EncounterTracker extends Component {
         return total;
     }
 
+    toggleCreateCreatureMenu(e){
+        this.setState({showCreateCreatureMenu: !this.state.showCreateCreatureMenu});
+    }
+
+    searchCreatures(e){
+        this.setState({creatureSearchTerm: e.target.value, showCreateCreatureMenu: false})
+    }
+
     render(){
-        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+' creature '+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp}/>);
-        //console.log(this.state.creaturesList);
-        // console.log(renderedCreatures);
+        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+'-creature-'+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp}/>);
 
         return (
             <div className='encounter-tracker'>
@@ -126,28 +152,36 @@ class EncounterTracker extends Component {
                 </ul>
 
                 <Modal isActive={this.state.addCreatureModal} toggleModal={this.toggleAddCreatureModal} content={
-                <form onSubmit={this.addCreature}>
-                    <label for='name'>Creature Name</label>
-                    <input type='name' id='name'></input>
-                    <label for='armor'>Armor Class</label>
-                    <div>
-                        <input type='range' id='armor' min='1' max='30' placeholder='10' defaultValue={10} onChange={(e) => {
-                            document.getElementById('armor-val').innerHTML = e.target.value;
-                        }}></input>
-                        <span className='range-value' id='armor-val' ref='armor-val'>10</span>
-                    </div>
-                    <label for='init-mod'>Inititive Modifier</label>
-                    <div>
-                        <input type='range' id='init-mod' min='-5' max='5' placeholder='0' defaultValue={0} onChange={(e) => {
-                            const val = e.target.value > 0 ? '+'+e.target.value : e.target.value;
-                            document.getElementById('init-mod-val').innerHTML = val;
-                        }}></input>
-                        <span className='range-value' id='init-mod-val' ref='init-mod-val'>0</span>
-                    </div>
-                    <label for='hp'>HP Formula</label>
-                    <input id='hp'></input>
-                    <input type='submit'></input>
-                </form>
+                    <React.Fragment>
+                        <input className='creature-search' onChange={this.searchCreatures}></input>
+                        <button className="create-custom-btn" onClick={this.toggleCreateCreatureMenu}>Create Custom Combatent</button>
+                        {this.state.creatureSearchTerm.length > 0 ? this.state.savedCreatures.filter((creature) => {
+                            return creature.name.toLowerCase().includes(this.state.creatureSearchTerm.toLowerCase());
+                        }).map((creature, i) => {return <Creature key={'search-creature-'+i} thumbnail={creature.thumbnail} name={creature.name} />}) : <div></div>}
+                        {this.state.showCreateCreatureMenu ? (
+                        <form id='create-creature-form'onSubmit={this.addCreature}>
+                            <label for='name'>Creature Name</label>
+                            <input type='name' id='name'></input>
+                            <label for='armor'>Armor Class</label>
+                            <div>
+                                <input type='range' id='armor' min='1' max='30' placeholder='10' defaultValue={10} onChange={(e) => {
+                                    document.getElementById('armor-val').innerHTML = e.target.value;
+                                }}></input>
+                                <span className='range-value' id='armor-val' ref='armor-val'>10</span>
+                            </div>
+                            <label for='init-mod'>Inititive Modifier</label>
+                            <div>
+                                <input type='range' id='init-mod' min='-5' max='5' placeholder='0' defaultValue={0} onChange={(e) => {
+                                    const val = e.target.value > 0 ? '+'+e.target.value : e.target.value;
+                                    document.getElementById('init-mod-val').innerHTML = val;
+                                }}></input>
+                                <span className='range-value' id='init-mod-val' ref='init-mod-val'>0</span>
+                            </div>
+                            <label for='hp'>HP Formula</label>
+                            <input id='hp'></input>
+                            <input type='submit'></input>
+                        </form>) : (<div></div>)}
+                    </React.Fragment>
                 }/>
             </div>
         )
