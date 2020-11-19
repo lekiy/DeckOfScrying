@@ -3,14 +3,22 @@ import React, {Component} from 'react';
 class Creature extends Component {
     constructor(props){
         super(props);
-        this.state = {showHPAdjustMenu: false} 
-        
+        this.state = {
+            showHPAdjustMenu: false,
+            showSubMenu: false,
+        } 
+
+        this.toggleSubMenu = this.toggleSubMenu.bind(this);
         this.toggleHPAdjustMenu = this.toggleHPAdjustMenu.bind(this);
         this.adjustHP = this.adjustHP.bind(this);
     }
 
     toggleHPAdjustMenu(){
         this.setState({showHPAdjustMenu: !this.state.showHPAdjustMenu});
+    }
+
+    toggleSubMenu(){
+        this.setState({showSubMenu: !this.state.showSubMenu});
     }
 
     adjustHP(e){
@@ -39,11 +47,14 @@ class Creature extends Component {
                 <h3>{this.props.name}</h3> 
                 <div>
                     AC: {this.props.armor}
+                    {this.props.hpCurrent > 0 ? <span>
                     <button className='edit-hp-btn' onClick={this.toggleHPAdjustMenu}>
                     HP: <b>{this.props.hpCurrent}</b>/<b>{this.props.hpMax}</b>
-                    </button>
+                    </button></span> : <span> <button className='edit-hp-btn' onClick={this.toggleHPAdjustMenu}>Dead</button></span> }
                     {editHpMenu()}
                 </div>
+                <button onClick={this.toggleSubMenu}>...</button>
+                {this.state.showSubMenu ? this.props.subMenu : <div></div>}
             </li>
         )
     }

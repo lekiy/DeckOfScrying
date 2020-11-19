@@ -4,6 +4,7 @@ import './encounter-tracker.css';
 import Toolbar from './Toolbar';
 import Modal from './Modal'
 import SearchItem from './SearchItem'
+import SubMenu from './SubMenu'
 import {SavedCreatures} from './SavedCreatures'
 
 
@@ -32,6 +33,7 @@ class EncounterTracker extends Component {
         this.toggleCreateCreatureMenu = this.toggleCreateCreatureMenu.bind(this);
         this.searchCreatures = this.searchCreatures.bind(this);
         this.selectCreature = this.selectCreature.bind(this);
+        this.removeCreature = this.removeCreature.bind(this);
     }
 
     /* toggles the add creature modal*/
@@ -116,7 +118,10 @@ class EncounterTracker extends Component {
         held in state. */
     modifyHp(index, amount){
         const creatures = this.state.creaturesList;
-        creatures[index].hpCurrent+=amount;
+        let hp = creatures[index].hpCurrent+amount;
+        if(hp < 0) hp = 0;
+        if(hp > creatures[index].hpMax) hp = creatures[index].hpMax;
+        creatures[index].hpCurrent = hp;
         this.setState({creaturesList: creatures});
     }
 
@@ -154,8 +159,13 @@ class EncounterTracker extends Component {
         this.setState({creaturesList: [...this.state.creaturesList, creature]});
     }
 
+    removeCreature(creatureIndex){
+        const creatures = this.state.creaturesList.filter((creature, i) => i !== creatureIndex);
+        this.setState({creaturesList: creatures});
+    }
+
     render(){
-        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+'-creature-'+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp}/>);
+        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+'-creature-'+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp} subMenu={<SubMenu options={<button onClick={() => this.removeCreature(i)}>Remove Creature</button>}/>}/>);
 
         return (
             <div className='encounter-tracker'>
