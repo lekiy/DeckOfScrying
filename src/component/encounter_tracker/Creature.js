@@ -5,10 +5,8 @@ class Creature extends Component {
         super(props);
         this.state = {
             showHPAdjustMenu: false,
-            showSubMenu: false,
+            
         } 
-
-        this.toggleSubMenu = this.toggleSubMenu.bind(this);
         this.toggleHPAdjustMenu = this.toggleHPAdjustMenu.bind(this);
         this.adjustHP = this.adjustHP.bind(this);
     }
@@ -17,9 +15,7 @@ class Creature extends Component {
         this.setState({showHPAdjustMenu: !this.state.showHPAdjustMenu});
     }
 
-    toggleSubMenu(){
-        this.setState({showSubMenu: !this.state.showSubMenu});
-    }
+    
 
     adjustHP(e){
         e.preventDefault();
@@ -53,8 +49,8 @@ class Creature extends Component {
                     </button></span> : <span> <button className='edit-hp-btn' onClick={this.toggleHPAdjustMenu}>Dead</button></span> }
                     {editHpMenu()}
                 </div>
-                <button className='dot-menu' onClick={this.toggleSubMenu}><span className='dot'> </span><span className='dot'> </span><span className='dot'> </span></button>
-                {this.state.showSubMenu ? this.props.subMenu : <React.Fragment/>}
+                {this.props.subMenu}
+                
             </li>
         )
     }

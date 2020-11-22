@@ -13,7 +13,12 @@ class Main extends Component {
     }
 
     createEncounter = () => {
-        this.setState({components: [...this.state.components, <EncounterTracker />]})
+        const key = 'encounter-'+(this.state.components.length+1);
+        this.setState({components: [...this.state.components, <EncounterTracker key={key} removeEncounter={() => this.removeEncounter(key)}/>]})
+    }
+
+    removeEncounter = (key) => {
+        this.setState({components: this.state.components.filter((component) => component.key !== key)});
     }
 
     render(){

@@ -188,9 +188,11 @@ class EncounterTracker extends Component {
                 hpMax={creature.hpMax} 
                 hpCurrent={creature.hpCurrent} 
                 modifyHP={this.modifyHp} 
-                subMenu={<SubMenu 
-                    options={<button 
-                    onClick={() => this.removeCreature(i)}>Remove Creature</button>}/>
+                subMenu={<SubMenu
+                    options={<React.Fragment>
+                                <a href="#" className='drop-down-option' onClick={() => this.removeCreature(i)}>Remove Creature</a>
+                                <a href="#" className='drop-down-option'>Edit Creature</a>
+                            </React.Fragment>}/>
                 }/>
         });
 
@@ -200,6 +202,8 @@ class EncounterTracker extends Component {
                     <React.Fragment>
                         <button className='add-creature-btn' onClick={this.toggleAddCreatureModal}>Add Combatent</button>
                         {this.state.encounterStarted ? <button className='next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
+                        <button></button>
+                        <button className='close-btn' onClick={this.props.removeEncounter}>X</button>
                     </React.Fragment>
                 } />
                 <ul className='creature-list'>
