@@ -5,7 +5,7 @@ import Toolbar from './Toolbar';
 import Modal from './Modal'
 import SearchItem from './SearchItem'
 import SubMenu from './SubMenu'
-import {SavedCreatures} from './SavedCreatures'
+import api from '../../api/api';
 
 
 class EncounterTracker extends Component {
@@ -19,16 +19,14 @@ class EncounterTracker extends Component {
             encounterIndex: 0,
             showCreateCreatureMenu: false,
             creatureSearchTerm: '',
-            savedCreatures: SavedCreatures
+            isLoading: false,
+            savedCreatures: []
         }
 
-        this.toggleAddCreatureModal = this.toggleAddCreatureModal.bind(this);
         this.addCreature = this.addCreature.bind(this);
         this.calcHP = this.calcHP.bind(this);
         this.buildImgURL = this.buildImgURL.bind(this);
         this.rollDice = this.rollDice.bind(this);
-        this.startEncounter = this.startEncounter.bind(this);
-        this.nextTurn = this.nextTurn.bind(this);
         this.modifyHp = this.modifyHp.bind(this);
         this.toggleCreateCreatureMenu = this.toggleCreateCreatureMenu.bind(this);
         this.searchCreatures = this.searchCreatures.bind(this);
@@ -36,8 +34,20 @@ class EncounterTracker extends Component {
         this.removeCreature = this.removeCreature.bind(this);
     }
 
+    componentDidMount = async () => {
+        this.setState({isLoading: true})
+
+        await api.getAllMonsters().then(monsters => {
+            this.setState({
+                savedCreatures: monsters.data.data,
+                isLoading: false, 
+            })
+        })
+        console.log('monsters loaded', this.savedCreatures)
+    }
+
     /* toggles the add creature modal*/
-    toggleAddCreatureModal(){
+    toggleAddCreatureModal = () =>{
         this.setState({addCreatureModal: !this.state.addCreatureModal});
     }
 
@@ -59,11 +69,12 @@ class EncounterTracker extends Component {
         }
         this.setState({creaturesList: [...this.state.creaturesList, creature]});
         this.toggleAddCreatureModal();
+        console.log("added");
         // console.log(this.state.creaturesList);
     }
 
     /* Sorts the creatures list by its inititive value then sets the encounter to true*/
-    startEncounter() {
+    startEncounter = () => {
         if(this.state.creaturesList.length > 0){
             let creatures = this.state.creaturesList.sort((a, b) => a.init - b.init);
             creatures[0].active = true;
@@ -75,7 +86,7 @@ class EncounterTracker extends Component {
     }
 
     /* Cycles through the turn list */
-    nextTurn() {
+    nextTurn = () => {
         let index = this.state.encounterIndex+1;
         if(index >= this.state.creaturesList.length) index = 0;
         this.setState({encounterIndex: index, creaturesList: this.state.creaturesList.map((creature, i) => {
@@ -91,7 +102,7 @@ class EncounterTracker extends Component {
         adds the resource URL location */
     buildImgURL(string){
         const value = string.toLowerCase().split(' ').join('-');
-        return process.env.PUBLIC_URL+'/'+value+'.png'
+        return process.env.PUBLIC_URL+'/'+value;
     }
 
     /*
@@ -157,6 +168,7 @@ class EncounterTracker extends Component {
             hpCurrent:hp
         }
         this.setState({creaturesList: [...this.state.creaturesList, creature]});
+        console.log(this.state.creaturesList)
     }
 
     removeCreature(creatureIndex){
@@ -165,7 +177,22 @@ class EncounterTracker extends Component {
     }
 
     render(){
-        const renderedCreatures = this.state.creaturesList.map((creature, i) => <Creature key={this.props.key+'-creature-'+i} index={i} active={creature.active} thumbnail={creature.thumbnail} name={creature.name} armor={creature.armor} hpMax={creature.hpMax} hpCurrent={creature.hpCurrent} modifyHP={this.modifyHp} subMenu={<SubMenu options={<button onClick={() => this.removeCreature(i)}>Remove Creature</button>}/>}/>);
+        const renderedCreatures = this.state.creaturesList.map((creature, i) => {
+            return <Creature 
+                key={this.props.key+'-creature-'+i} 
+                index={i} 
+                active={creature.active} 
+                thumbnail={creature.thumbnail} 
+                name={creature.name} 
+                armor={creature.armor} 
+                hpMax={creature.hpMax} 
+                hpCurrent={creature.hpCurrent} 
+                modifyHP={this.modifyHp} 
+                subMenu={<SubMenu 
+                    options={<button 
+                    onClick={() => this.removeCreature(i)}>Remove Creature</button>}/>
+                }/>
+        });
 
         return (
             <div className='encounter-tracker'>

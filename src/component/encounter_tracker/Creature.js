@@ -42,7 +42,7 @@ class Creature extends Component {
             
 
         return (
-            <li className='creature' style={this.props.active ? {'marginLeft': '-20px'} : {'marginLeft': '10px'}}>
+            <li className='creature' style={this.props.active ? {'marginLeft': '-0.25rem'} : {'marginLeft': '0.25rem'}}>
                 <img src={this.props.thumbnail} />
                 <h3>{this.props.name}</h3> 
                 <div>
@@ -53,8 +53,8 @@ class Creature extends Component {
                     </button></span> : <span> <button className='edit-hp-btn' onClick={this.toggleHPAdjustMenu}>Dead</button></span> }
                     {editHpMenu()}
                 </div>
-                <button onClick={this.toggleSubMenu}>...</button>
-                {this.state.showSubMenu ? this.props.subMenu : <div></div>}
+                <button className='dot-menu' onClick={this.toggleSubMenu}><span className='dot'> </span><span className='dot'> </span><span className='dot'> </span></button>
+                {this.state.showSubMenu ? this.props.subMenu : <React.Fragment/>}
             </li>
         )
     }

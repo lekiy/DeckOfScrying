@@ -1,34 +1,36 @@
 .encounter-tracker{
-  border-radius: 25px;
   margin:10px;
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, .5);
-  min-height: 306px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, .5);
+  min-height: 10rem;
+  width:20rem;
 }
 
 .toolbar{
     display: flex;
     align-items: center;
-    justify-content: space-around;
     flex-direction: row;
     width:100%;
-    height:60px;
-    background-color: white;
+    height:2rem;
+    background-color: grey;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
 }
 
 .toolbar button {
-    background-color: rgb(187, 111, 206);
-    border-radius: 8px;
-    border: 0px solid black;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, .5);
-    height:36px;
-    width:80px;
+    color:white;
+    background: linear-gradient(90deg, grey, rgb(60, 60, 60));
+    border:none;
+    border-right: 2px solid linear-gradient(#e66465, #9198e5);;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    left: -10px;
+    height:100%;
+    width:33.33%;
     font-weight: bold;
 }
 
 .toolbar button:active{
-    border-radius: 10px;
+    border:0px;
 }
 
 .creature-list{
@@ -36,34 +38,38 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding:10px;
+    padding:0.5rem;
     margin: 0;
 }
 
 .creature{
+    color:white;
     display:flex;
     align-items: center;
     justify-content: space-between;
-    height:90px;
+    height:3rem;
     width:90%;
-    background-color: white;
-    margin:10px;
-    border-radius: 15px;
+    background: linear-gradient(90deg, grey, rgb(60, 60, 60));
+    border:none;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    margin:0.25rem;
     list-style-type: none;
     padding-left:10px;
     padding-right:10px;
-    box-shadow: 3px 3px 5px rgba(0, 0, 0, .5);
+    /* box-shadow: 0px 3px 8px rgba(0, 0, 0, .5); */
 }
 
 .creature img{
-    width:70px;
-    height:70px;
+    width:2.5rem;
+    height:2.5rem;
     
 }
 
 .modal{
     position: absolute;
     top:0;
+    left:0;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -125,4 +131,23 @@
 
   .search-item:hover{
     margin-left: -10px;
+  }
+
+  .dot{
+    border-radius: 50%;
+    width: .25rem;
+    height: .25rem;
+    background-color: grey;
+    display: inline-block;
+  }
+
+  .dot-menu{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border:none;
+    background-color: transparent;
+    width:1rem;
+    height:1.5rem;
   }

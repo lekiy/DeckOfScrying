@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: slateblue
+  background-color: rgb(60, 60, 60);
 }
 
 code {
@@ -13,11 +13,12 @@ code {
     monospace;
 }
 
-#main{
+.main{
   display:flex;
   justify-content: center;
   align-items: center;
-  flex-flow:column;
+  flex-flow:row;
+  flex-wrap: wrap;
 }
 
 .deckHolder{
@@ -35,9 +36,9 @@ code {
 }
 
 .navbar{
-  background-color:seashell;
+  background-color: grey;
   width: 100%;
-  height: 3rem;
+  height: 2rem;
   display: flex;
   flex-flow: row;
   align-items: center;
@@ -114,7 +115,7 @@ h3{
   
 }
 
-.modalContent{
+/* .modalContent{
   display: flex;
   justify-content: center;
   align-items: center;
@@ -143,7 +144,7 @@ h3{
   background-color: white;
   padding: .5rem;
   border: 2px solid black;
-}
+} */
 
 .card {
   margin: 1rem;
