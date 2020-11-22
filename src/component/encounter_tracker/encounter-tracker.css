@@ -16,7 +16,7 @@
     border-top-right-radius: inherit;
 }
 
-.toolbar button {
+.toolbar-btn {
     color:white;
     background: linear-gradient(90deg, grey, rgb(60, 60, 60));
     border:none;
@@ -28,7 +28,7 @@
     font-weight: bold;
 }
 
-.toolbar button:hover{
+.toolbar-btn:hover{
   background: linear-gradient(90deg, rgb(128, 128, 128), rgb(168, 168, 168));
 }
 
@@ -43,8 +43,6 @@
 .toolbar .close-btn:hover{
   background: radial-gradient(rgb(173, 40, 40) 30%, grey 100%);
 }
-
-
 
 .creature-list{
     display: flex;
@@ -92,7 +90,7 @@
     height:100vh;
   }
   
-  .closeModalBtn{
+  .close-modal-btn{
     background-color: rgba(0, 0, 0, 0);
     border:none;
     margin-left: 15rem;
@@ -102,7 +100,7 @@
     font-size: 1.5rem;
   }
   
-  .closeModalBtn:hover{
+  .close-ModalBtn:hover{
     background-color: rgba(255, 255, 255, .5);
     border-radius: 50%;
     
