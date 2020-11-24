@@ -30,9 +30,22 @@ class Main extends Component {
 
     saveCreature = async (e) => {
         e.preventDefault();
-        const data = JSON.parse(e.target[1].value);
+        let data = {};
+        if(e.target[0].checked){
+            data = JSON.parse(e.target[1].value);
+        }else{
+            data = {
+                name: e.target[1].value,
+                thumbnail: e.target[2].value,
+                armor: e.target[3].value,
+                armorType: e.target[4].value,
+                initMod: e.target[5].value,
+                hpFormula: e.target[6].value,
+                hpFlat: e.target[7].value,
+                challengeRating: e.target[8].value,
+            }
+        }
         api.insertMonster(data).then(() => window.alert('Creature Added '+data.name));
-        //this.toggleUseJson();
     }
 
     render(){
@@ -46,7 +59,24 @@ class Main extends Component {
                                 <label>Import From JSON: </label>
                                 <input id="use-json" type="checkbox" onClick={this.toggleUseJson}></input>
                             </div>
-                            {this.state.useJson ? (<textarea rows="10" cols='50' />) : (<React.Fragment />)}
+                            {this.state.useJson ? (<textarea rows="10" cols='50' />) : (<React.Fragment>
+                                <label>Name</label>
+                                <input type='name'></input>
+                                <label>icon</label>
+                                <input></input>
+                                <label>Armor Class</label>
+                                <input type='number'></input>
+                                <label>Armor Type</label>
+                                <input></input>
+                                <label>Inititave Modifier</label>
+                                <input type='number'></input>
+                                <label>HP Formula</label>
+                                <input></input>
+                                <label>Average HP</label>
+                                <input type='number'></input>
+                                <label>Challenge Rating</label>
+                                <input type='number' step='.01'></input>
+                            </React.Fragment>)}
                             <input type="submit" name='saveCreature' value="Save Creature"></input>
                         </form>
                     </React.Fragment>} />
