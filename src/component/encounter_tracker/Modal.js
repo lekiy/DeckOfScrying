@@ -15,7 +15,7 @@ class Modal extends Component {
     
     render(){
         return (<React.Fragment>
-            <button className={this.props.buttonClass+' open-modal-btn'} onClick={this.toggleModal}>{this.props.modalName}</button>
+            <button className={this.props.buttonClass+' open-modal-btn'} onClick={() => {this.toggleModal(); if(this.props.onClick){this.props.onClick()}}}>{this.props.modalName}</button>
             {this.state.isActive ?
             (
                 <div className="modal">

@@ -11,17 +11,28 @@ class Main extends Component {
         this.state = {
             isLoading: false,
             components: [],
-            useJson: false
+            useJson: false,
+            savedEncounters: [],
         }
     }
 
-    createEncounter = () => {
+    createEncounter = (e) => {
+        e.preventDefault();
         const key = 'encounter-'+(this.state.components.length+1);
         this.setState({components: [...this.state.components, <EncounterTracker key={key} removeEncounter={() => this.removeEncounter(key)}/>]})
     }
 
     removeEncounter = (key) => {
         this.setState({components: this.state.components.filter((component) => component.key !== key)});
+    }
+
+    loadEncounters = async () => {
+        await api.getAllEncounters().then(encounters => {
+            this.setState({
+                savedEncounters: encounters.data.data, 
+            })
+        })
+        console.log('encounters loaded', this.savedEncounters)
     }
 
     toggleUseJson = () => [
@@ -53,6 +64,12 @@ class Main extends Component {
             <div className="main">
                 <Navbar content={ <React.Fragment>
                     <button onClick={this.createEncounter}>Create New Encounter</button> 
+                    <Modal modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
+                            <form onSubmit={this.createEncounter}>
+                                <input type='name'></input>
+                                <ul>{this.state.savedEncounters.map((encounter) => <li><input type='submit' value={encounter.name}></input></li>)}</ul>
+                            </form>
+                    </React.Fragment>} />
                     <Modal modalName="Add New Creature" content={<React.Fragment>
                         <form onSubmit={this.saveCreature}>
                             <div>
