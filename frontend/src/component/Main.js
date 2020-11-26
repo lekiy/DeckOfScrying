@@ -16,9 +16,10 @@ class Main extends Component {
         }
     }
 
-    createEncounter = () => {
+    createEncounter = (e) => {
+        e.preventDefault();
         const key = 'encounter-'+(this.state.components.length+1);
-        this.setState({components: [...this.state.components, <EncounterTracker key={key} removeEncounter={() => this.removeEncounter(key)}/>]})
+        this.setState({components: [...this.state.components, <EncounterTracker key={key} name={e.target[0].value} removeEncounter={() => this.removeEncounter(key)}/>]})
     }
 
     addEncounter = (encounter) => {
@@ -68,7 +69,13 @@ class Main extends Component {
         return (
             <div className="main">
                 <Navbar content={ <React.Fragment>
-                    <button onClick={this.createEncounter}>Create New Encounter</button> 
+                    <Modal modalName="Create New Encounter" content={
+                        <form onSubmit={this.createEncounter}>
+                            <label>Encounter Name</label>
+                            <input type="name"></input>
+                            <input type="submit" value="Create Encounter"></input>
+                        </form>
+                    }/> 
                     <Modal modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
                         <ul>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}>{encounter.name}</button></li>)}</ul>
                     </React.Fragment>} />

@@ -27,7 +27,7 @@ class EncounterTracker extends Component {
             }
         }else{
             this.state = {
-                name: this.props.key,
+                name: this.props.name,
                 creaturesList: [],
                 addCreatureModal: false,
                 encounterStarted: false,
@@ -225,7 +225,7 @@ class EncounterTracker extends Component {
 
         return (
             <div className='encounter-tracker'>
-                <Toolbar content={
+                <Toolbar name={this.state.name} content={
                     <React.Fragment>
                         <Modal modalName='Add Combatent' buttonClass='toolbar-btn' content={
                             <React.Fragment>

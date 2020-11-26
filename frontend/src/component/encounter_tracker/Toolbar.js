@@ -7,9 +7,12 @@ class Toolbar extends Component {
 
     render(){
         return (
-            <div className='toolbar'>
-                {this.props.content}
-            </div>
+            <React.Fragment>
+                <h3>{this.props.name}</h3>
+                <div className='toolbar'>
+                    {this.props.content}
+                </div>
+            </React.Fragment>
         )
     }
 }
