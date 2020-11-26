@@ -14,8 +14,8 @@ class SubMenu extends Component {
 
     render(){
         return (
-            <div className='drop-down'>
-                <button className='drop-down-btn' onClick={this.toggleSubMenu}><span className='dot-container'><span className='dot'> </span><span className='dot'> </span><span className='dot'></span></span></button>
+            <div className={this.props.className+' drop-down'}>
+                <button className='drop-down-btn' onClick={this.toggleSubMenu}><span className='dot-container'><span className={'dot '+this.props.color}> </span><span className={'dot '+this.props.color}> </span><span className={'dot '+this.props.color}></span></span></button>
                 {this.state.showSubMenu ? (<div className='drop-down-content'>
                     {this.props.options}
                 </div>) : <React.Fragment/>}

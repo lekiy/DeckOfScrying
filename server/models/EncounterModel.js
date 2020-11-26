@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const Encounter = new Schema(
-    {
+    {  
         name: {type: String, required: true}, 
-        encounterStarted: {type:Boolean, required: true},
-        encounterIndex: {type: Number, required: true},
-        combatants: {type: Array, required: true},
+        encounterStarted: {type:Boolean, required: true, default: false},
+        encounterIndex: {type: Number, required: true, default: 0},
+        combatants: {type: Array, required: true, default: []},
     },
     {timestamps: true},
 )

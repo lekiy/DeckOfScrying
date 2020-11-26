@@ -11,10 +11,10 @@ import api from '../../api/api';
 class EncounterTracker extends Component {
     constructor(props){
         super(props);
-        //let creature = <Creature thumbnail={process.env.PUBLIC_URL+'/swarm-of-spiders.png'} name='Swarm of Spiders' armor='10' hpMax='7' hpCurrent='7'/>;
         if(this.props.encounterData){
-            const {combatants, encounterIndex, encounterStarted, name} = this.props.encounterData;
+            const {combatants, encounterIndex, encounterStarted, name, _id} = this.props.encounterData;
             this.state = {
+                _id: _id,
                 name: name,
                 creaturesList: combatants,
                 addCreatureModal: false,
@@ -39,15 +39,14 @@ class EncounterTracker extends Component {
             }
         }
 
-        this.addCreature = this.addCreature.bind(this);
+
+
         this.calcHP = this.calcHP.bind(this);
         this.buildImgURL = this.buildImgURL.bind(this);
         this.rollDice = this.rollDice.bind(this);
-        this.modifyHp = this.modifyHp.bind(this);
         this.toggleCreateCreatureMenu = this.toggleCreateCreatureMenu.bind(this);
         this.searchCreatures = this.searchCreatures.bind(this);
         this.selectCreature = this.selectCreature.bind(this);
-        this.removeCreature = this.removeCreature.bind(this);
     }
 
     componentDidMount = async () => {
@@ -63,14 +62,18 @@ class EncounterTracker extends Component {
     }
 
     saveEncounter = async () => {
+        
         const data = {
             combatants: this.state.creaturesList,
             encounterIndex: this.state.encounterIndex,
             encounterStarted: this.state.encounterStarted,
             name: this.state.name
         }
-
-        await api.insertEncounter(data).then(() => window.alert('Encounter Saved '+data.name));
+        const _id = this.state._id;
+        if(_id){
+            await api.updateEncounterById(_id, data);
+        }
+        
     }
 
     /* toggles the add creature modal*/
@@ -79,7 +82,7 @@ class EncounterTracker extends Component {
     }
 
     /* adds a creature to the state list with specified attributes */
-    addCreature(e){
+    addCreature = async (e) => {
         e.preventDefault();
         const formData = e.target;
         const thumbnail = this.buildImgURL(formData[0].value)
@@ -94,18 +97,19 @@ class EncounterTracker extends Component {
             hpMax: hp,
             hpCurrent:hp
         }
-        this.setState({creaturesList: [...this.state.creaturesList, creature]});
+        await this.setState({creaturesList: [...this.state.creaturesList, creature]});
+        this.saveEncounter();
         this.toggleAddCreatureModal();
         console.log("added");
-        // console.log(this.state.creaturesList);
     }
 
     /* Sorts the creatures list by its inititive value then sets the encounter to true*/
-    startEncounter = () => {
+    startEncounter = async () => {
         if(this.state.creaturesList.length > 0){
             let creatures = this.state.creaturesList.sort((a, b) => a.init - b.init);
             creatures[0].active = true;
-            this.setState({creaturesList: this.state.creaturesList.sort((a, b) => a.init - b.init), encounterStarted: true});
+            await this.setState({creaturesList: this.state.creaturesList.sort((a, b) => a.init - b.init), encounterStarted: true});
+            this.saveEncounter();
         }else{
             console.log('no creatures in list', this.state.creaturesList);
         }
@@ -113,7 +117,7 @@ class EncounterTracker extends Component {
     }
 
     /* Cycles through the turn list */
-    nextTurn = () => {
+    nextTurn = async () => {
         let index = this.state.encounterIndex+1;
         if(index >= this.state.creaturesList.length) index = 0;
         this.setState({encounterIndex: index, creaturesList: this.state.creaturesList.map((creature, i) => {
@@ -123,6 +127,7 @@ class EncounterTracker extends Component {
             }
             return creature;
         })})
+        this.saveEncounter();
     }
 
     /* takes a string and removes spaces and replaces them with dashes, then
@@ -154,13 +159,14 @@ class EncounterTracker extends Component {
 
     /* Adds or subtracts from the creatures (specified by the index) current hp
         held in state. */
-    modifyHp(index, amount){
+    modifyHp = async (index, amount) => {
         const creatures = this.state.creaturesList;
         let hp = creatures[index].hpCurrent+amount;
         if(hp < 0) hp = 0;
         if(hp > creatures[index].hpMax) hp = creatures[index].hpMax;
         creatures[index].hpCurrent = hp;
-        this.setState({creaturesList: creatures});
+        await this.setState({creaturesList: creatures});
+        this.saveEncounter();
     }
 
     /* Returns a randomized value between (1-inputed size)*amount, 
@@ -198,9 +204,10 @@ class EncounterTracker extends Component {
         console.log(this.state.creaturesList)
     }
 
-    removeCreature(creatureIndex){
+    removeCreature = async (creatureIndex) => {
         const creatures = this.state.creaturesList.filter((creature, i) => i !== creatureIndex);
-        this.setState({creaturesList: creatures});
+        await this.setState({creaturesList: creatures});
+        this.saveEncounter();
     }
 
     render(){
@@ -225,8 +232,9 @@ class EncounterTracker extends Component {
 
         return (
             <div className='encounter-tracker'>
-                <Toolbar name={this.state.name} content={
+                <Toolbar name={this.state.name} closeAction={this.props.removeEncounter} content={
                     <React.Fragment>
+                        {this.state.encounterStarted ? <button className='toolbar-btn next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='toolbar-btn start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
                         <Modal modalName='Add Combatent' buttonClass='toolbar-btn' content={
                             <React.Fragment>
                                 <input className='creature-search' onChange={this.searchCreatures}></input>
@@ -259,9 +267,7 @@ class EncounterTracker extends Component {
                                 </form>) : (<div></div>)}
                             </React.Fragment>
                         }/>
-                        {this.state.encounterStarted ? <button className='toolbar-btn next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='toolbar-btn start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
-                        <button className='toolbar-btn' onClick={this.saveEncounter}>Save Encounter</button>
-                        <button className='toolbar-btn close-btn' onClick={this.props.removeEncounter}>X</button>
+                        
                     </React.Fragment>
                 } />
                 <ul className='creature-list'>

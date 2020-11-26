@@ -16,10 +16,14 @@ class Main extends Component {
         }
     }
 
-    createEncounter = (e) => {
+    createEncounter = async (e) => {
         e.preventDefault();
+        const encounter = await api.insertEncounter({name:e.target[0].value}).then((encounter) =>{
+            return encounter.data.data;
+        });
+        
         const key = 'encounter-'+(this.state.components.length+1);
-        this.setState({components: [...this.state.components, <EncounterTracker key={key} name={e.target[0].value} removeEncounter={() => this.removeEncounter(key)}/>]})
+        this.setState({components: [...this.state.components, <EncounterTracker key={key} removeEncounter={() => this.removeEncounter(key)} encounterData={encounter}/>]})
     }
 
     addEncounter = (encounter) => {

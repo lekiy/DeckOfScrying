@@ -21,7 +21,7 @@ createEncounter = (req, res) => {
     .then(() => {
         return res.status(201).json({
             success: true,
-            id: Encounter._id,
+            data: encounter,
             message: 'Encounter created!',
         })
     })
