@@ -4,7 +4,7 @@ import './encounter-tracker.css';
 import Toolbar from './Toolbar';
 import Modal from './Modal'
 import SearchItem from './SearchItem'
-import SubMenu from './SubMenu'
+import DropDown from './DropDown'
 import api from '../../api/api';
 
 
@@ -222,7 +222,7 @@ class EncounterTracker extends Component {
                 hpMax={creature.hpMax} 
                 hpCurrent={creature.hpCurrent} 
                 modifyHP={this.modifyHp} 
-                subMenu={<SubMenu
+                subMenu={<DropDown isDots={true}
                     options={<React.Fragment>
                                 <a href="#" className='drop-down-option' onClick={() => this.removeCreature(i)}>Remove Creature</a>
                                 <a href="#" className='drop-down-option'>Edit Creature</a>

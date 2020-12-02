@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'https://localhost:3030/api',
+    baseURL: "https://tame-wasp-21.loca.lt/api"//'https://localhost:3030/api',
 })
 
 export const insertMonster = payload => api.post('/monster', payload)

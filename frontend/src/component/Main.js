@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import EncounterTracker from './encounter_tracker/EncounterTracker';
 import Navbar from './Navbar';
+import DropDown from './encounter_tracker/DropDown';
 import Modal from './encounter_tracker/Modal';
 import api from '../api/api';
 
@@ -73,17 +74,22 @@ class Main extends Component {
         return (
             <div className="main">
                 <Navbar content={ <React.Fragment>
-                    <Modal modalName="Create New Encounter" content={
-                        <form onSubmit={this.createEncounter}>
-                            <label>Encounter Name</label>
-                            <input type="name"></input>
-                            <input type="submit" value="Create Encounter"></input>
-                        </form>
-                    }/> 
-                    <Modal modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
-                        <ul>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}>{encounter.name}</button></li>)}</ul>
-                    </React.Fragment>} />
-                    <Modal modalName="Add New Creature" content={<React.Fragment>
+                    <h3 className='main-title'>Deck Of Scrying</h3>
+                    <DropDown btnClass='nav-btn' buttonName='Encounter' options={[
+                        <Modal btnClass='drop-down-item' modalName="Create New Encounter" content={
+                            <form onSubmit={this.createEncounter}>
+                                <label>Encounter Name</label>
+                                <input type="name"></input>
+                                <input type="submit" value="Create Encounter"></input>
+                            </form>
+                        }/>,
+                        <Modal btnClass='drop-down-item'modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
+                            <ul>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}>{encounter.name}</button></li>)}</ul>
+                        </React.Fragment>}/>]} 
+                    />
+                        
+                        
+                    <Modal btnClass='nav-btn' modalName="Add New Creature" content={<React.Fragment>
                         <form onSubmit={this.saveCreature}>
                             <div>
                                 <label>Import From JSON: </label>

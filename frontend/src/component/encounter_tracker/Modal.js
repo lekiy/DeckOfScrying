@@ -15,13 +15,19 @@ class Modal extends Component {
     
     render(){
         return (<React.Fragment>
-            <button className={this.props.buttonClass+' open-modal-btn'} onClick={() => {this.toggleModal(); if(this.props.onClick){this.props.onClick()}}}>{this.props.modalName}</button>
+            <button className={`open-modal-btn ${this.props.btnClass}`} onClick={() => {this.toggleModal(); if(this.props.onClick){this.props.onClick()}}}>{this.props.modalName}</button>
             {this.state.isActive ?
             (
-                <div className="modal">
-                    <button className="close-modal-btn" onClick={this.toggleModal}>X</button>
-                    <div className="modal-content">
-                        {this.props.content}
+                <div className="modal-bg">
+                    <div className="modal">
+                        <div className='modal-header'>
+                            <h3 className='modal-name'>{this.props.modalName}</h3>
+                            <button className="close-modal-btn" onClick={this.toggleModal}>X</button>
+                        </div>
+                        <div className="modal-content">
+                        
+                            {this.props.content}
+                        </div>
                     </div>
                     
                 </div>
