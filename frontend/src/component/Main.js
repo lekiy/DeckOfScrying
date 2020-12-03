@@ -77,25 +77,25 @@ class Main extends Component {
                     <h3 className='main-title'>Deck Of Scrying</h3>
                     <DropDown btnClass='nav-btn' buttonName='Encounter' options={[
                         <Modal btnClass='drop-down-item' modalName="Create New Encounter" content={
-                            <form onSubmit={this.createEncounter}>
+                            <form className='create-encounter-form' onSubmit={this.createEncounter}>
                                 <label>Encounter Name</label>
                                 <input type="name"></input>
                                 <input type="submit" value="Create Encounter"></input>
                             </form>
                         }/>,
                         <Modal btnClass='drop-down-item'modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
-                            <ul>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}>{encounter.name}</button></li>)}</ul>
+                            <ul className='encounters-list'>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}><span className='encounter-list-title'>{encounter.name}</span><span className='encounter-list-creatures'>{encounter.combatants.map(creature => <img className='icon' src={creature.thumbnail} />)}</span></button></li>)}</ul>
                         </React.Fragment>}/>]} 
                     />
                         
                         
                     <Modal btnClass='nav-btn' modalName="Add New Creature" content={<React.Fragment>
-                        <form onSubmit={this.saveCreature}>
-                            <div>
-                                <label>Import From JSON: </label>
-                                <input id="use-json" type="checkbox" onClick={this.toggleUseJson}></input>
-                            </div>
-                            {this.state.useJson ? (<textarea rows="10" cols='50' />) : (<React.Fragment>
+                        <form className="add-creature-form" onSubmit={this.saveCreature}>
+                                <div className="start">
+                                    <label>Import From JSON: </label>
+                                    <input id="use-json" type="checkbox" onClick={this.toggleUseJson}></input>
+                                </div>
+                            {this.state.useJson ? (<textarea className='center' rows="10" cols='50' />) : (<React.Fragment>
                                 <label>Name</label>
                                 <input type='name'></input>
                                 <label>icon</label>
@@ -113,7 +113,7 @@ class Main extends Component {
                                 <label>Challenge Rating</label>
                                 <input type='number' step='.01'></input>
                             </React.Fragment>)}
-                            <input type="submit" name='saveCreature' value="Save Creature"></input>
+                            <input className='end' type="submit" name='saveCreature' value="Save Creature"></input>
                         </form>
                     </React.Fragment>} />
                 </React.Fragment>}/>

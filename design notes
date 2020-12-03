@@ -1,5 +1,0 @@
-Features TODO:
-
-Bugs
-    Encounter Components load creature lists only when created making them unable to access newly created creatures.
-    Modal close button is unable to be clicked when covering other items in the background.
