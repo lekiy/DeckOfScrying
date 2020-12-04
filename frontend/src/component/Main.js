@@ -84,7 +84,7 @@ class Main extends Component {
                             </form>
                         }/>,
                         <Modal btnClass='drop-down-item'modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
-                            <ul className='encounters-list'>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}><span className='encounter-list-title'>{encounter.name}</span><span className='encounter-list-creatures'>{encounter.combatants.map(creature => <img className='icon' src={creature.thumbnail} />)}</span></button></li>)}</ul>
+                            <ul className='encounters-list'>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}><span className='encounter-list-title'>{encounter.name}</span>Enemies: <span className='encounter-list-creatures'>{encounter.combatants.map(creature => <img className='icon' src={creature.thumbnail} />)}</span>Allies: </button></li>)}</ul>
                         </React.Fragment>}/>]} 
                     />
                         

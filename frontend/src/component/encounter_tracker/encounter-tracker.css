@@ -38,10 +38,14 @@ input {
   padding:0;
   margin:0;
   color:white;
+  align-items: center;
 }
 
 .encounter-list-title{
   grid-column: 2/4;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  border-right: 3px dotted rgb(192,192,192);
+  border-left: 3px dotted rgb(192,192,192);
 }
 
 .encounter-list-creatures{
@@ -49,9 +53,11 @@ input {
 }
 
 .icon {
-  width:2.5em;
-  height:100%;
-  border-radius: 5px;
+  width:3em;
+  height:3em;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .encounters-list button:hover {
@@ -170,9 +176,12 @@ input {
 }
 
 .creature img{
-    width:2.5rem;
-    height:2.5rem;
-    
+    width:2.5em;
+    height:2.5em;
+    object-fit: cover;
+    object-position: 50% 50%;
+    background-color: transparent;
+    border-radius: 10px;
 }
 
 .modal-bg{
