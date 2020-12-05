@@ -1,0 +1,1 @@
+mongod --dbpath="C:\Users\lekiy\Desktop\Deck Of Scrying\deck-of-scrying\data\db"

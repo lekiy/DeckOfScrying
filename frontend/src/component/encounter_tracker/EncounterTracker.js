@@ -235,38 +235,41 @@ class EncounterTracker extends Component {
                 <Toolbar name={this.state.name} closeAction={this.props.removeEncounter} content={
                     <React.Fragment>
                         {this.state.encounterStarted ? <button className='toolbar-btn next-turn-btn' onClick={this.nextTurn}>Next Turn</button> : <button className='toolbar-btn start-encounter-btn' onClick={this.startEncounter}>Start Encounter</button>}
-                        <Modal modalName='Add Combatent' buttonClass='toolbar-btn' content={
-                            <React.Fragment>
-                                <input className='creature-search' onChange={this.searchCreatures}></input>
-                                <button className="create-custom-btn" onClick={this.toggleCreateCreatureMenu}>Create Custom Combatent</button>
-                                {this.state.creatureSearchTerm.length > 0 ? this.state.savedCreatures.filter((creature) => {
-                                    return creature.name.toLowerCase().includes(this.state.creatureSearchTerm.toLowerCase());
-                                }).map((creature, i) => {return <SearchItem key={'search-creature-'+i} onClick={() => this.selectCreature(creature)} thumbnail={this.buildImgURL(creature.thumbnail)} name={creature.name} />}) : <div></div>}
-                                {this.state.showCreateCreatureMenu ? (
-                                <form id='create-creature-form'onSubmit={this.addCreature}>
-                                    <label for='name'>Creature Name</label>
-                                    <input type='name' id='name'></input>
-                                    <label for='armor'>Armor Class</label>
-                                    <div>
-                                        <input type='range' id='armor' min='1' max='30' placeholder='10' defaultValue={10} onChange={(e) => {
-                                            document.getElementById('armor-val').innerHTML = e.target.value;
-                                        }}></input>
-                                        <span className='range-value' id='armor-val' ref='armor-val'>10</span>
-                                    </div>
-                                    <label for='init-mod'>Inititive Modifier</label>
-                                    <div>
-                                        <input type='range' id='init-mod' min='-5' max='5' placeholder='0' defaultValue={0} onChange={(e) => {
-                                            const val = e.target.value > 0 ? '+'+e.target.value : e.target.value;
-                                            document.getElementById('init-mod-val').innerHTML = val;
-                                        }}></input>
-                                        <span className='range-value' id='init-mod-val' ref='init-mod-val'>0</span>
-                                    </div>
-                                    <label for='hp'>HP Formula</label>
-                                    <input id='hp'></input>
-                                    <input type='submit'></input>
-                                </form>) : (<div></div>)}
-                            </React.Fragment>
-                        }/>
+                        <DropDown btnClass='toolbar-btn' buttonName='Options' options={[
+                            <Modal btnClass='drop-down-item' modalName='Add Combatent' buttonClass='toolbar-btn' content={
+                                <React.Fragment>
+                                    <input className='creature-search' onChange={this.searchCreatures}></input>
+                                    <button className="create-custom-btn" onClick={this.toggleCreateCreatureMenu}>Create Custom Combatent</button>
+                                    {this.state.creatureSearchTerm.length > 0 ? this.state.savedCreatures.filter((creature) => {
+                                        return creature.name.toLowerCase().includes(this.state.creatureSearchTerm.toLowerCase());
+                                    }).map((creature, i) => {return <SearchItem key={'search-creature-'+i} onClick={() => this.selectCreature(creature)} thumbnail={this.buildImgURL(creature.thumbnail)} name={creature.name} />}) : <div></div>}
+                                    {this.state.showCreateCreatureMenu ? (
+                                    <form id='create-creature-form'onSubmit={this.addCreature}>
+                                        <label for='name'>Creature Name</label>
+                                        <input type='name' id='name'></input>
+                                        <label for='armor'>Armor Class</label>
+                                        <div>
+                                            <input type='range' id='armor' min='1' max='30' placeholder='10' defaultValue={10} onChange={(e) => {
+                                                document.getElementById('armor-val').innerHTML = e.target.value;
+                                            }}></input>
+                                            <span className='range-value' id='armor-val' ref='armor-val'>10</span>
+                                        </div>
+                                        <label for='init-mod'>Inititive Modifier</label>
+                                        <div>
+                                            <input type='range' id='init-mod' min='-5' max='5' placeholder='0' defaultValue={0} onChange={(e) => {
+                                                const val = e.target.value > 0 ? '+'+e.target.value : e.target.value;
+                                                document.getElementById('init-mod-val').innerHTML = val;
+                                            }}></input>
+                                            <span className='range-value' id='init-mod-val' ref='init-mod-val'>0</span>
+                                        </div>
+                                        <label for='hp'>HP Formula</label>
+                                        <input id='hp'></input>
+                                        <input type='submit'></input>
+                                    </form>) : (<div></div>)}
+                                </React.Fragment>
+                            }/>,
+                            <button className='drop-down-item' onClick=''>Reset All</button>
+                        ]}/>
                         
                     </React.Fragment>
                 } />

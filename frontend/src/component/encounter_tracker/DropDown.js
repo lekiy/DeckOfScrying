@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, useRef} from 'react';
 import {Dots} from '../StaticComponents';
 
 class DropDown extends Component {
@@ -14,9 +14,8 @@ class DropDown extends Component {
     }
 
     render(){
-
         return (
-            <div className={this.props.className+' drop-down'}>
+            <div ref={dropdown} className={this.props.className+' drop-down'}>
                 <button className={'drop-down-btn '+this.props.btnClass} onClick={this.toggleDropDown}> {this.props.buttonName} {this.props.isDots ? (<Dots color='gray'/>) : (React.Fragment)} </button>
                 
                 {this.state.showDropDown ? (<div className='drop-down-content'> {this.props.options} </div>) : <React.Fragment/>}
