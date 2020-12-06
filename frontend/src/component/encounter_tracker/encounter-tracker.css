@@ -188,11 +188,11 @@ input {
     position: fixed;
     top:0;
     left:0;
-    display:flex;
-    justify-content: center;
+    display:flex !important;
+    justify-content: center ;
     align-items: center;
     flex-flow: column;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(0, 0, 0, .5) !important;
     width:100vw;
     height:100vh;
   }
@@ -352,7 +352,7 @@ input {
     z-index: 1;
   }
 
-  .drop-down-item{
+  .drop-down-item > *{
     background-color: gray;
     border:none;
     color: white;
@@ -366,6 +366,6 @@ input {
     font-size: 12pt;
   }
 
-  .drop-down-item:hover{
+  .drop-down-item:hover > *{
     background-color: rgb(170, 170, 170);
   }

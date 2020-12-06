@@ -222,11 +222,10 @@ class EncounterTracker extends Component {
                 hpMax={creature.hpMax} 
                 hpCurrent={creature.hpCurrent} 
                 modifyHP={this.modifyHp} 
-                subMenu={<DropDown isDots={true}
-                    options={<React.Fragment>
-                                <a href="#" className='drop-down-option' onClick={() => this.removeCreature(i)}>Remove Creature</a>
-                                <a href="#" className='drop-down-option'>Edit Creature</a>
-                            </React.Fragment>}/>
+                subMenu={<DropDown isDots={true}>
+                            <a href="#" className='drop-down-option' onClick={() => this.removeCreature(i)}>Remove Creature</a>
+                            <a href="#" className='drop-down-option'>Edit Creature</a>
+                        </DropDown>
                 }/>
         });
 

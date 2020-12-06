@@ -75,20 +75,18 @@ class Main extends Component {
             <div className="main">
                 <Navbar content={ <React.Fragment>
                     <h3 className='main-title'>Deck Of Scrying</h3>
-                    <DropDown btnClass='nav-btn' buttonName='Encounter' options={[
-                        <Modal btnClass='drop-down-item' modalName="Create New Encounter" content={
+                    <DropDown btnClass='nav-btn' buttonName='Encounter'>
+                        <Modal modalName="Create New Encounter" content={
                             <form className='create-encounter-form' onSubmit={this.createEncounter}>
                                 <label>Encounter Name</label>
                                 <input type="name"></input>
                                 <input type="submit" value="Create Encounter"></input>
                             </form>
-                        }/>,
+                        }/>
                         <Modal btnClass='drop-down-item'modalName="Load Encounter" onClick={this.loadEncounters} content={<React.Fragment >
                             <ul className='encounters-list'>{this.state.savedEncounters.map((encounter) => <li><button onClick={() => this.addEncounter(encounter)}><span className='encounter-list-title'>{encounter.name}</span>Enemies: <span className='encounter-list-creatures'>{encounter.combatants.map(creature => <img className='icon' src={creature.thumbnail} />)}</span>Allies: </button></li>)}</ul>
-                        </React.Fragment>}/>]} 
-                    />
-                        
-                        
+                        </React.Fragment>}/>
+                    </DropDown> 
                     <Modal btnClass='nav-btn' modalName="Add New Creature" content={<React.Fragment>
                         <form className="add-creature-form" onSubmit={this.saveCreature}>
                                 <div className="start">
